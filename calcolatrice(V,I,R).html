@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcolatrice di Telecomunicazioni</title>
+    <!-- Importiamo i font -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            background-color: #1f3a93;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        header img {
+            width: 100px;
+            margin-right: 20px;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+        }
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            margin: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 40px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .explanation {
+            margin-bottom: 40px;
+            line-height: 1.6;
+            font-size: 1.1em;
+        }
+        .form-container {
+            text-align: center;
+        }
+        .form-group {
+            margin: 15px 0;
+        }
+        input[type="number"] {
+            padding: 15px;
+            width: 80%;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 1em;
+        }
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #1f3a93;
+            box-shadow: 0 0 5px rgba(31, 58, 147, 0.5);
+        }
+        button {
+            padding: 15px 30px;
+            background-color: #1f3a93;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s;
+        }
+        button:hover {
+            background-color: #4b6cb7;
+            transform: scale(1.05);
+        }
+        #result {
+            margin-top: 30px;
+            font-size: 1.4rem;
+            color: #1f3a93;
+            display: none;
+            font-weight: bold;
+        }
+        #calcolo-v, #calcolo-i, #calcolo-r {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sezione Intestazione con il logo -->
+    <header>
+        <img src="C:\Users\studente\Downloads\calcolatricee\calcolatriceImage.webp" alt="Logo Telecomunicazioni">
+        <h1>Calcolatrice Di Grivetto</h1>
+    </header>
+
+    <!-- Container principale -->
+    <div class="container">
+        <!-- Sezione Spiegazione dei concetti -->
+        <div class="explanation">
+            <h2>Concetti base:</h2>
+            <p><strong>Tensione (V)</strong>: È la differenza di potenziale elettrico tra due punti di un circuito. Si misura in Volt (V).</p>
+            <p><strong>Corrente (I)</strong>: È il flusso di cariche elettriche attraverso un conduttore. Si misura in Ampere (A).</p>
+            <p><strong>Resistenza (R)</strong>: È la misura della difficoltà incontrata dal flusso di corrente attraverso un materiale. Si misura in Ohm (Ω).</p>
+            <p>La relazione tra queste tre grandezze è data dalla <strong>Legge di Ohm</strong>:</p>
+            <p style="text-align: center; font-weight: bold;">V = I × R</p>
+        </div>
+
+        <!-- Selezione tipo di calcolo -->
+        <div class="form-container">
+            <button onclick="showForm('v')">Calcola V</button>
+            <button onclick="showForm('i')">Calcola I</button>
+            <button onclick="showForm('r')">Calcola R</button>
+        </div>
+
+        <!-- Form per il calcolo della tensione -->
+        <div id="calcolo-v">
+            <h2>Calcola la Tensione (V)</h2>
+            <div class="form-group">
+                <input type="number" id="current-v" placeholder="Inserisci la corrente (I in A)">
+            </div>
+            <div class="form-group">
+                <input type="number" id="resistance-v" placeholder="Inserisci la resistenza (R in Ω)">
+            </div>
+            <button onclick="calculateVoltage()">Calcola Tensione (V)</button>
+        </div>
+
+        <!-- Form per il calcolo della corrente -->
+        <div id="calcolo-i">
+            <h2>Calcola la Corrente (I)</h2>
+            <div class="form-group">
+                <input type="number" id="voltage-i" placeholder="Inserisci la tensione (V in Volt)">
+            </div>
+            <div class="form-group">
+                <input type="number" id="resistance-i" placeholder="Inserisci la resistenza (R in Ω)">
+            </div>
+            <button onclick="calculateCurrent()">Calcola Corrente (I)</button>
+        </div>
+
+        <!-- Form per il calcolo della resistenza -->
+        <div id="calcolo-r">
+            <h2>Calcola la Resistenza (R)</h2>
+            <div class="form-group">
+                <input type="number" id="voltage-r" placeholder="Inserisci la tensione (V in Volt)">
+            </div>
+            <div class="form-group">
+                <input type="number" id="current-r" placeholder="Inserisci la corrente (I in A)">
+            </div>
+            <button onclick="calculateResistance()">Calcola Resistenza (R)</button>
+        </div>
+
+        <!-- Area dei risultati -->
+        <div id="result">
+            <strong>Risultato: </strong><span id="result-value"></span>
+        </div>
+    </div>
+
+    <!-- Script JavaScript per calcolare i valori -->
+    <script>
+        // Funzione per mostrare il form corretto
+        function showForm(form) {
+            document.getElementById('calcolo-v').style.display = 'none';
+            document.getElementById('calcolo-i').style.display = 'none';
+            document.getElementById('calcolo-r').style.display = 'none';
+
+            if (form === 'v') {
+                document.getElementById('calcolo-v').style.display = 'block';
+            } else if (form === 'i') {
+                document.getElementById('calcolo-i').style.display = 'block';
+            } else if (form === 'r') {
+                document.getElementById('calcolo-r').style.display = 'block';
+            }
+        }
+
+        // Calcolo della Tensione (V = I * R)
+        function calculateVoltage() {
+            const current = parseFloat(document.getElementById('current-v').value);
+            const resistance = parseFloat(document.getElementById('resistance-v').value);
+
+            if (!isNaN(current) && !isNaN(resistance)) {
+                const voltage = current * resistance;
+                if (voltage >= 0) {
+                    document.getElementById('result-value').textContent = voltage.toFixed(2) + ' Volt';
+                    document.getElementById('result').style.display = 'block';
+                } else {
+                    alert('Il risultato non può essere negativo.');
+                }
+            } else {
+                alert('Inserisci valori validi.');
+            }
+        }
+
+        // Calcolo della Corrente (I = V / R)
+        function calculateCurrent() {
+            const voltage = parseFloat(document.getElementById('voltage-i').value);
+            const resistance = parseFloat(document.getElementById('resistance-i').value);
+
+            if (!isNaN(voltage) && !isNaN(resistance) && resistance !== 0) {
+                const current = voltage / resistance;
+                if (current >= 0) {
+                    document.getElementById('result-value').textContent = current.toFixed(2) + ' A';
+                    document.getElementById('result').style.display = 'block';
+                } else {
+                    alert('Il risultato non può essere negativo.');
+                }
+            } else {
+                alert('Inserisci valori validi e resistenza diversa da zero.');
+            }
+        }
+
+        // Calcolo della Resistenza (R = V / I)
+        function calculateResistance() {
+            const voltage = parseFloat(document.getElementById('voltage-r').value);
+            const current = parseFloat(document.getElementById('current-r').value);
+
+            if (!isNaN(voltage) && !isNaN(current) && current !== 0) {
+                const resistance = voltage / current;
+                if (resistance >= 0) {
+                    document.getElementById('result-value').textContent = resistance.toFixed(2) + ' Ω';
+                    document.getElementById('result').style.display = 'block';
+                } else {
+                    alert('Il risultato non può essere negativo.');
+                }
+            } else {
+                alert('Inserisci valori validi e corrente diversa da zero.');
+            }
+        }
+    </script>
+
+</body>
+</html>
